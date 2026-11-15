@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>မင်္ဂလာဖိတ်ကြားလွှာ | မောင်ချမ်းမင်းခန့် &amp; မယွန်းနဒီဇော်</title>
+  <!-- Google Fonts for authentic Myanmar Typography & Luxury Serif Accents -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Noto+Serif+Myanmar:wght@400;500;600;700&family=Padauk:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ==========================================================================
+       CSS VARIABLES & LUXURY PALETTE
+       ========================================================================== */
+    :root {
+      --ivory-light: #FFFDF9;
+      --ivory-base: #FDFBF7;
+      --champagne-cream: #F8EFE0;
+      --champagne-warm: #EFE0C4;
+      --blush-soft: #FAE6EA;
+      --blush-pink: #F2CDD5;
+      --blush-rose: #D98F9E;
+      --gold-pale: #F7E8B5;
+      --gold-bright: #E5C158;
+      --gold-metallic: #C59B27;
+      --gold-deep: #8C6713;
+      --ink-royal: #3A2618;
+      --ink-muted: #5C4332;
+      --shadow-luxury: 0 28px 65px -12px rgba(74, 48, 22, 0.28), 0 12px 24px -8px rgba(140, 103, 19, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100%;
+      overflow-x: hidden;
+      background: radial-gradient(circle at 50% 25%, #FFFBF2 0%, #F5E6D3 45%, #E7CEB5 100%);
+      color: var(--ink-royal);
+      font-family: 'Noto Serif Myanmar', 'Padauk', Georgia, serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Ambient Golden Room Lighting Overlay */
+    .ambient-lighting {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(255, 245, 214, 0.75) 0%, transparent 60%),
+        radial-gradient(circle at 15% 85%, rgba(246, 213, 220, 0.45) 0%, transparent 50%),
+        radial-gradient(circle at 85% 20%, rgba(229, 193, 88, 0.25) 0%, transparent 45%);
+    }
+
+    /* Fullscreen Falling Petals & Gold Dust Canvas */
+    #petal-gold-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 50;
+    }
+
+    /* Main Stage Container */
+    .stage {
+      position: relative;
+      z-index: 10;
+      min-height: 100vh;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 14px 44px;
+      perspective: 1800px;
+    }
+
+    /* ==========================================================================
+       1. OUTER LUXURY 3D ENVELOPE
+       ========================================================================== */
+    .envelope-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 460px;
+      aspect-ratio: 1.44 / 1;
+      cursor: pointer;
+      transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.85s ease, visibility 0.85s ease;
+      transform-style: preserve-3d;
+      margin: auto;
+      user-select: none;
+    }
+
+    .envelope-wrapper:not(.opened):hover {
+      transform: translateY(-6px) scale(1.015);
+    }
+
+    .envelope-wrapper.opened {
+      pointer-events: none;
+    }
+
+    .envelope-wrapper.hidden-away {
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(80px) scale(0.92);
+      position: absolute;
+    }
+
+    /* Envelope Body Back */
+    .envelope-back {
+      position: absolute;
+      inset: 0;
+      border-radius: 14px;
+      background: linear-gradient(145deg, #FBF6ED 0%, #EFE2CB 100%);
+      box-shadow: var(--shadow-luxury);
+      border: 1px solid rgba(197, 155, 39, 0.45);
+      overflow: hidden;
+    }
+
+    /* Subtle Linen Paper Texture */
+    .paper-grain {
+      position: absolute;
+      inset: 0;
+      opacity: 0.38;
+      pointer-events: none;
+      background-image:
+        repeating-linear-gradient(0deg, rgba(197, 155, 39, 0.04) 0px, rgba(197, 155, 39, 0.04) 1px, transparent 1px, transparent 3px),
+        repeating-linear-gradient(90deg, rgba(160, 120, 60, 0.035) 0px, rgba(160, 120, 60, 0.035) 1px, transparent 1px, transparent 3px);
+    }
+
+    /* Inner Card Preview Peeking Out */
+    .envelope-inner-peek {
+      position: absolute;
+      left: 6%;
+      right: 6%;
+      top: 10%;
+      bottom: 8%;
+      background: linear-gradient(180deg, #FFFDF8 0%, #F9EFE0 100%);
+      border-radius: 10px;
+      border: 1.5px solid #D4AF37;
+      box-shadow: 0 4px 16px rgba(92, 67, 50, 0.15);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 22px;
+      z-index: 2;
+      transition: transform 1.05s cubic-bezier(0.34, 1.35, 0.64, 1) 0.35s;
+    }
+
+    .envelope-inner-peek span {
+      font-family: 'Noto Serif Myanmar', serif;
+      font-size: clamp(0.95rem, 2.8vw, 1.2rem);
+      font-weight: 700;
+      color: #9A7118;
+      letter-spacing: 0.03em;
+    }
+
+    .envelope-wrapper.opened .envelope-inner-peek {
+      transform: translateY(-58%);
+    }
+
+    /* Left, Right & Bottom Envelope Pocket Flaps */
+    .envelope-pocket {
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      border-radius: 14px;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    /* Left Wing */
+    .flap-left {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(110deg, #FDF9F1 0%, #F5E8D3 78%, #E7D2B1 100%);
+      clip-path: polygon(0 0, 53% 52%, 0 100%);
+      filter: drop-shadow(3px 0 6px rgba(105, 75, 32, 0.12));
+    }
+
+    /* Right Wing */
+    .flap-right {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(250deg, #FDF9F1 0%, #F5E8D3 78%, #E7D2B1 100%);
+      clip-path: polygon(100% 0, 47% 52%, 100% 100%);
+      filter: drop-shadow(-3px 0 6px rgba(105, 75, 32, 0.12));
+    }
+
+    /* Bottom Pocket Flap */
+    .flap-bottom {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(0deg, #FAF3E6 0%, #F7ECDA 65%, #EAD6B7 100%);
+      clip-path: polygon(0 100%, 50% 45%, 100% 100%);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.5);
+      filter: drop-shadow(0 -4px 8px rgba(112, 80, 35, 0.14));
+    }
+
+    /* Gold Foil Trim along Bottom Pocket */
+    .flap-bottom-gold-edge {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, #B88A1E, #F3DC8B, #C59B27, #F3DC8B, #B88A1E);
+      clip-path: polygon(0 100%, 50% 44.3%, 100% 100%, 98.5% 100%, 50% 45.8%, 1.5% 100%);
+      opacity: 0.85;
+    }
+
+    /* Top 3D Opening Flap */
+    .flap-top-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 58%;
+      z-index: 6;
+      transform-origin: top center;
+      transform-style: preserve-3d;
+      transition: transform 0.95s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.1s linear 0.45s;
+    }
+
+    .envelope-wrapper.opened .flap-top-container {
+      transform: rotateX(180deg);
+      z-index: 1;
+    }
+
+    .flap-top-front {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, #FFFDF8 0%, #F6E9D2 75%, #EAD5B3 100%);
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      border-top-left-radius: 14px;
+      border-top-right-radius: 14px;
+      filter: drop-shadow(0 8px 14px rgba(92, 65, 26, 0.22));
+      backface-visibility: hidden;
+    }
+
+    .flap-top-gold-border {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, #B88A1E, #F6E299, #C59B27, #F6E299, #B88A1E);
+      clip-path: polygon(0 0, 100% 0, 50% 100%, 50% 97.2%, 98% 0, 2% 0, 50% 97.2%, 50% 100%);
+    }
+
+    /* Champagne Silk Satin Ribbon & Tulip Bouquet Ornament on Outer Envelope (NO HEARTS) */
+    .envelope-ornament-cluster {
+      position: absolute;
+      left: 50%;
+      top: 52%;
+      transform: translate(-50%, -44%);
+      z-index: 8;
+      width: 240px;
+      max-width: 68%;
+      pointer-events: none;
+      transition: opacity 0.45s ease, transform 0.6s ease;
+    }
+
+    .envelope-wrapper.opened .envelope-ornament-cluster {
+      opacity: 0;
+      transform: translate(-50%, -44%) scale(0.85);
+    }
+
+    /* Horizontal Blush & Champagne Satin Band across Envelope */
+    .envelope-ribbon-band {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 54%;
+      height: 22px;
+      transform: translateY(-50%);
+      z-index: 5;
+      background: linear-gradient(180deg, #F9DDE3 0%, #EABAC5 48%, #D89BA9 52%, #F5D2DA 100%);
+      box-shadow: 0 3px 10px rgba(115, 72, 82, 0.2);
+      border-top: 1px solid rgba(212, 175, 55, 0.65);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.65);
+      transition: opacity 0.45s ease;
+    }
+
+    .envelope-wrapper.opened .envelope-ribbon-band {
+      opacity: 0;
+    }
+
+    /* Tap Prompt Pill */
+    .open-prompt {
+      margin-top: 26px;
+      text-align: center;
+      z-index: 12;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .open-prompt.hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(10px);
+    }
+
+    .open-prompt-btn {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 12px 28px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(255, 253, 248, 0.94), rgba(248, 236, 214, 0.94));
+      border: 1.5px solid #D4AF37;
+      box-shadow: 0 10px 28px rgba(140, 103, 19, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      cursor: pointer;
+      animation: gentlePulse 2.6s infinite ease-in-out;
+    }
+
+    .open-prompt-btn .mm-prompt {
+      font-family: 'Noto Serif Myanmar', serif;
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: var(--gold-deep);
+    }
+
+    .open-prompt-btn .en-prompt {
+      font-family: 'Cinzel', serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+    }
+
+    @keyframes gentlePulse {
+      0%, 100% { transform: translateY(0) scale(1); box-shadow: 0 10px 28px rgba(140, 103, 19, 0.2); }
+      50% { transform: translateY(-3px) scale(1.025); box-shadow: 0 14px 34px rgba(197, 155, 39, 0.34); }
+    }
+
+    /* ==========================================================================
+       2. INNER LUXURY PORTRAIT WEDDING INVITATION CARD
+       ========================================================================== */
+    .invitation-container {
+      width: 100%;
+      max-width: 560px;
+      display: none;
+      opacity: 0;
+      transform: translateY(45px) scale(0.94);
+      transition: opacity 1.1s cubic-bezier(0.22, 1, 0.36, 1), transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+      z-index: 20;
+    }
+
+    .invitation-container.visible {
+      display: block;
+    }
+
+    .invitation-container.revealed {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .invitation-card {
+      position: relative;
+      width: 100%;
+      border-radius: 20px;
+      background:
+        radial-gradient(ellipse at 50% 42%, #FFFDF9 0%, #FDF8EE 52%, #F6E8D2 100%);
+      box-shadow:
+        0 32px 75px -12px rgba(74, 48, 22, 0.34),
+        0 0 0 1px rgba(212, 175, 55, 0.65),
+        inset 0 0 60px rgba(235, 206, 150, 0.38);
+      overflow: hidden;
+      padding: 0;
+    }
+
+    /* Soft Golden Halo Glow Inside Card */
+    .card-golden-glow {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 50% 16%, rgba(255, 241, 194, 0.72) 0%, transparent 48%),
+        radial-gradient(circle at 50% 86%, rgba(248, 214, 222, 0.42) 0%, transparent 50%);
+      z-index: 1;
+    }
+
+    /* Integrated Background SVG Artwork (Borders, Kanote Filigree, Flowers, Feathers, Satin Ribbon, Wedding Rings) */
+    .card-art-layer {
+      position: relative;
+      width: 100%;
+      z-index: 2;
+    }
+
+    .top-floral-rings-svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      pointer-events: none;
+    }
+
+    .bottom-floral-ribbon-svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      pointer-events: none;
+      margin-top: -8px;
+    }
+
+    /* Ornate Gold Frame Border Overlay inside the Card */
+    .card-gold-frame {
+      position: absolute;
+      inset: 12px;
+      border: 1.5px solid rgba(197, 155, 39, 0.72);
+      border-radius: 14px;
+      pointer-events: none;
+      z-index: 4;
+      box-shadow: inset 0 0 0 4px rgba(255, 253, 249, 0.55), inset 0 0 0 5px rgba(212, 175, 55, 0.45);
+    }
+
+    /* Luminous Clean Reading Area for Burmese Invitation Text */
+    .invitation-content {
+      position: relative;
+      z-index: 5;
+      margin: -18px 20px 0;
+      padding: 18px 18px 14px;
+      border-radius: 16px;
+      background: radial-gradient(ellipse at center, rgba(255, 253, 249, 0.94) 60%, rgba(255, 251, 242, 0.78) 100%);
+      box-shadow: 0 4px 28px rgba(255, 250, 238, 0.9);
+      text-align: center;
+    }
+
+    /* Burmese Header: မင်္ဂလာဖိတ်ကြားလွှာ */
+    .burmese-header {
+      font-family: 'Noto Serif Myanmar', 'Padauk', serif;
+      font-size: clamp(1.5rem, 5.2vw, 2.05rem);
+      font-weight: 700;
+      line-height: 1.55;
+      background: linear-gradient(180deg, #9C7014 0%, #C89B2B 45%, #7E560B 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 1px 1px rgba(255, 255, 255, 0.9));
+      margin-bottom: 6px;
+      letter-spacing: 0.01em;
+    }
+
+    /* Gold Ornamental Divider under Header */
+    .header-divider {
+      width: 220px;
+      max-width: 78%;
+      height: 22px;
+      margin: 0 auto 14px;
+      display: block;
+    }
+
+    /* Burmese Body Paragraphs */
+    .burmese-lineage {
+      font-family: 'Noto Serif Myanmar', 'Padauk', serif;
+      font-size: clamp(0.86rem, 2.75vw, 0.99rem);
+      font-weight: 500;
+      line-height: 1.92;
+      color: var(--ink-royal);
+      margin-bottom: 8px;
+      word-break: keep-all;
+    }
+
+    /* Groom & Bride Regal Gold Names */
+    .couple-name {
+      font-family: 'Noto Serif Myanmar', 'Padauk', serif;
+      font-size: clamp(1.32rem, 4.5vw, 1.72rem);
+      font-weight: 700;
+      line-height: 1.65;
+      background: linear-gradient(180deg, #8F6310 0%, #C79926 50%, #785008 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.95));
+      margin: 2px 0 6px;
+    }
+
+    /* Ornate "နှင့်" Separator */
+    .conjunction-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 4px 0 8px;
+    }
+
+    .conjunction-line {
+      height: 1px;
+      width: 56px;
+      background: linear-gradient(90deg, transparent, #C59B27, transparent);
+    }
+
+    .conjunction-word {
+      font-family: 'Noto Serif Myanmar', 'Padauk', serif;
+      font-size: clamp(1.02rem, 3.3vw, 1.2rem);
+      font-weight: 700;
+      color: #A37618;
+    }
+
+    /* Closing Invitation Sentence */
+    .burmese-closing {
+      font-family: 'Noto Serif Myanmar', 'Padauk', serif;
+      font-size: clamp(0.88rem, 2.85vw, 1.02rem);
+      font-weight: 600;
+      line-height: 1.92;
+      color: var(--ink-royal);
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed rgba(197, 155, 39, 0.45);
+    }
+
+    /* ==========================================================================
+       3. WEDDING DETAILS LUXURY PANEL (Date, Time, Location)
+       ========================================================================== */
+    .details-panel {
+      margin-top: 18px;
+      padding: 16px 14px;
+      border-radius: 14px;
+      background: linear-gradient(145deg, rgba(253, 248, 238, 0.96), rgba(246, 232, 206, 0.88));
+      border: 1.2px solid rgba(197, 155, 39, 0.62);
+      box-shadow: 0 8px 24px rgba(140, 103, 19, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+    }
+
+    .detail-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      text-align: left;
+    }
+
+    .detail-icon {
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+
+    .detail-text {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(1.04rem, 3.4vw, 1.22rem);
+      font-weight: 700;
+      color: #4A3018;
+      letter-spacing: 0.02em;
+    }
+
+    .detail-divider {
+      height: 1px;
+      width: 72%;
+      margin: 0 auto;
+      background: linear-gradient(90deg, transparent, rgba(197, 155, 39, 0.5), transparent);
+    }
+
+    /* Subtle Interactive Controls Below Card */
+    .card-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+
+    .action-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 18px;
+      border-radius: 999px;
+      background: rgba(255, 253, 248, 0.92);
+      border: 1px solid rgba(197, 155, 39, 0.65);
+      color: var(--gold-deep);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(112, 80, 35, 0.12);
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .action-pill:hover {
+      background: #FFFDF7;
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 420px) {
+      .invitation-content {
+        margin: -12px 12px 0;
+        padding: 14px 12px 12px;
+      }
+      .card-gold-frame {
+        inset: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Ambient Golden Lighting -->
+  <div class="ambient-lighting"></div>
+
+  <!-- High-DPI Canvas for Individual Falling Petals & Sparkling Gold Dust -->
+  <canvas id="petal-gold-canvas"></canvas>
+
+  <main class="stage">
+    <!-- ======================================================================
+         1. OUTER 3D LUXURY WEDDING ENVELOPE (NO HEART SHAPES)
+         ====================================================================== -->
+    <div id="envelope" class="envelope-wrapper" role="button" tabindex="0" aria-label="Open Wedding Invitation">
+      <div class="envelope-back">
+        <div class="paper-grain"></div>
+      </div>
+
+      <!-- Inner Invitation Card Peeking Inside -->
+      <div class="envelope-inner-peek">
+        <span>မင်္ဂလာဖိတ်ကြားလွှာ</span>
+      </div>
+
+      <!-- Envelope Pocket Wings -->
+      <div class="envelope-pocket">
+        <div class="flap-left"><div class="paper-grain"></div></div>
+        <div class="flap-right"><div class="paper-grain"></div></div>
+        <div class="flap-bottom"><div class="paper-grain"></div></div>
+        <div class="flap-bottom-gold-edge"></div>
+      </div>
+
+      <!-- Silk Satin Ribbon Band -->
+      <div class="envelope-ribbon-band"></div>
+
+      <!-- Top 3D Envelope Flap -->
+      <div class="flap-top-container">
+        <div class="flap-top-front">
+          <div class="paper-grain"></div>
+          <div class="flap-top-gold-border"></div>
+        </div>
+      </div>
+
+      <!-- Small Pink & White Tulip Bouquet, Satin Bow & Gold Filigree Crest (Strictly No Hearts) -->
+      <div class="envelope-ornament-cluster">
+        <svg viewBox="0 0 280 180" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="envGold" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#F8E6A0" />
+              <stop offset="45%" stop-color="#C89B2B" />
+              <stop offset="100%" stop-color="#8F6510" />
+            </linearGradient>
+            <linearGradient id="pinkTulip" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#FCE4EC" />
+              <stop offset="55%" stop-color="#F2A6B8" />
+              <stop offset="100%" stop-color="#D4748B" />
+            </linearGradient>
+            <linearGradient id="whiteTulip" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#FFFFFF" />
+              <stop offset="65%" stop-color="#FDF5E8" />
+              <stop offset="100%" stop-color="#E7D4B8" />
+            </linearGradient>
+            <linearGradient id="sageLeaf" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#C3D4B8" />
+              <stop offset="100%" stop-color="#7E9674" />
+            </linearGradient>
+            <linearGradient id="satinBow" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#FBE7EC" />
+              <stop offset="50%" stop-color="#E7B2BF" />
+              <stop offset="100%" stop-color="#C88797" />
+            </linearGradient>
+            <filter id="softDrop" x="-15%" y="-15%" width="130%" height="130%">
+              <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#5C3D1E" flood-opacity="0.24" />
+            </filter>
+          </defs>
+
+          <g filter="url(#softDrop)">
+            <!-- Gold Filigree Medallion Frame behind Bouquet -->
+            <ellipse cx="140" cy="92" rx="54" ry="42" fill="#FFFDF8" stroke="url(#envGold)" stroke-width="2.2" />
+            <ellipse cx="140" cy="92" rx="48" ry="36" fill="none" stroke="url(#envGold)" stroke-width="0.9" stroke-dasharray="3 2" />
+
+            <!-- Tulip Stems & Gracefully Curved Leaves -->
+            <path d="M126 125 Q116 95 106 66" stroke="url(#sageLeaf)" stroke-width="3" fill="none" stroke-linecap="round" />
+            <path d="M140 128 Q140 92 140 54" stroke="url(#sageLeaf)" stroke-width="3.2" fill="none" stroke-linecap="round" />
+            <path d="M154 125 Q164 95 174 68" stroke="url(#sageLeaf)" stroke-width="3" fill="none" stroke-linecap="round" />
+            <path d="M132 126 Q124 100 122 76" stroke="url(#sageLeaf)" stroke-width="2.6" fill="none" stroke-linecap="round" />
+            <path d="M148 126 Q156 100 158 76" stroke="url(#sageLeaf)" stroke-width="2.6" fill="none" stroke-linecap="round" />
+
+            <!-- Tulip Foliage Blades -->
+            <path d="M128 118 C96 108, 84 82, 92 64 C106 78, 118 98, 130 116 Z" fill="url(#sageLeaf)" />
+            <path d="M152 118 C184 108, 196 82, 188 64 C174 78, 162 98, 150 116 Z" fill="url(#sageLeaf)" />
+            <path d="M136 116 C116 96, 114 74, 122 58 C130 76, 134 96, 138 114 Z" fill="#9BB190" opacity="0.85" />
+
+            <!-- Small Pink & White Tulip Blooms -->
+            <!-- Left Pink Tulip -->
+            <g transform="translate(104, 62) rotate(-24)">
+              <path d="M-11 6 C-13 -8, -6 -20, 0 -22 C6 -20, 13 -8, 11 6 C8 13, -8 13, -11 6 Z" fill="url(#pinkTulip)" />
+              <path d="M-5 8 C-6 -6, -2 -18, 0 -22 C2 -18, 6 -6, 5 8 Z" fill="#FAD2DC" opacity="0.7" />
+            </g>
+
+            <!-- Inner Left Ivory-White Tulip -->
+            <g transform="translate(122, 72) rotate(-12)">
+              <path d="M-10 5 C-11 -7, -5 -18, 0 -20 C5 -18, 11 -7, 10 5 C7 11, -7 11, -10 5 Z" fill="url(#whiteTulip)" stroke="#E5CFA8" stroke-width="0.6" />
+            </g>
+
+            <!-- Center Tall Blush-Pink Tulip -->
+            <g transform="translate(140, 50)">
+              <path d="M-13 7 C-15 -9, -7 -23, 0 -25 C7 -23, 15 -9, 13 7 C9 15, -9 15, -13 7 Z" fill="url(#pinkTulip)" />
+              <path d="M-6 9 C-7 -7, -2 -21, 0 -25 C2 -21, 7 -7, 6 9 Z" fill="#FFF0F4" opacity="0.65" />
+            </g>
+
+            <!-- Inner Right Ivory-White Tulip -->
+            <g transform="translate(158, 72) rotate(12)">
+              <path d="M-10 5 C-11 -7, -5 -18, 0 -20 C5 -18, 11 -7, 10 5 C7 11, -7 11, -10 5 Z" fill="url(#whiteTulip)" stroke="#E5CFA8" stroke-width="0.6" />
+            </g>
+
+            <!-- Right Pink Tulip -->
+            <g transform="translate(176, 64) rotate(24)">
+              <path d="M-11 6 C-13 -8, -6 -20, 0 -22 C6 -20, 13 -8, 11 6 C8 13, -8 13, -11 6 Z" fill="url(#pinkTulip)" />
+              <path d="M-5 8 C-6 -6, -2 -18, 0 -22 C2 -18, 6 -6, 5 8 Z" fill="#FAD2DC" opacity="0.7" />
+            </g>
+
+            <!-- Luxury Silk Satin Bow & Flowing Tails -->
+            <path d="M136 116 Q116 144 102 162 L114 159 L120 168 Q130 144 140 120 Z" fill="url(#satinBow)" />
+            <path d="M144 116 Q164 144 178 162 L166 159 L160 168 Q150 144 140 120 Z" fill="url(#satinBow)" />
+            <!-- Left & Right Bow Loops -->
+            <path d="M138 114 C112 96, 92 106, 96 120 C100 132, 122 126, 138 118 Z" fill="url(#satinBow)" stroke="#FFF5F7" stroke-width="0.7" />
+            <path d="M142 114 C168 96, 188 106, 184 120 C180 132, 158 126, 142 118 Z" fill="url(#satinBow)" stroke="#FFF5F7" stroke-width="0.7" />
+            <!-- Gold & Satin Center Knot -->
+            <rect x="133" y="109" width="14" height="13" rx="5" fill="url(#envGold)" stroke="#FFFDF8" stroke-width="0.9" />
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Tap to Open Prompt -->
+    <div id="open-prompt" class="open-prompt">
+      <button type="button" id="open-btn" class="open-prompt-btn">
+        <span class="mm-prompt">ဖိတ်စာဖွင့်ရန် နှိပ်ပါ</span>
+        <span class="en-prompt">Tap Envelope to Open Invitation</span>
+      </button>
+    </div>
+
+    <!-- ======================================================================
+         2. INNER LUXURY PORTRAIT WEDDING INVITATION CARD
+         ====================================================================== -->
+    <section id="invitation-container" class="invitation-container" aria-label="Wedding Invitation Card">
+      <article class="invitation-card">
+        <div class="card-golden-glow"></div>
+        <div class="card-gold-frame"></div>
+
+        <!-- TOP INTEGRATED ARTWORK: Gold Kanote Arch, Ostrich Feathers, Pink & White Roses, Satin Ribbon & Intertwined Gold Wedding Rings -->
+        <div class="card-art-layer">
+          <svg class="top-floral-rings-svg" viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <!-- Metallic Gold Gradients -->
+              <linearGradient id="goldFoil" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#B6861C" />
+                <stop offset="28%" stop-color="#F7E49C" />
+                <stop offset="52%" stop-color="#C89A28" />
+                <stop offset="78%" stop-color="#FFF0B8" />
+                <stop offset="100%" stop-color="#8C620E" />
+              </linearGradient>
+              <linearGradient id="ringGold1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#FFF3C4" />
+                <stop offset="30%" stop-color="#E5BA4B" />
+                <stop offset="65%" stop-color="#A87914" />
+                <stop offset="100%" stop-color="#F7DF8B" />
+              </linearGradient>
+              <linearGradient id="ringGold2" x1="100%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#F8E294" />
+                <stop offset="40%" stop-color="#C99824" />
+                <stop offset="75%" stop-color="#8E620C" />
+                <stop offset="100%" stop-color="#FFF4C8" />
+              </linearGradient>
+              <!-- Floral & Feather Gradients -->
+              <radialGradient id="rosePink" cx="40%" cy="35%" r="65%">
+                <stop offset="0%" stop-color="#FFF3F6" />
+                <stop offset="45%" stop-color="#F5B8C6" />
+                <stop offset="85%" stop-color="#DF8A9E" />
+                <stop offset="100%" stop-color="#C66B82" />
+              </radialGradient>
+              <radialGradient id="roseIvory" cx="40%" cy="35%" r="65%">
+                <stop offset="0%" stop-color="#FFFFFF" />
+                <stop offset="55%" stop-color="#FDF4E6" />
+                <stop offset="90%" stop-color="#EAD4B4" />
+                <stop offset="100%" stop-color="#D7BA91" />
+              </radialGradient>
+              <linearGradient id="eucalyptus" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#C8D9BE" />
+                <stop offset="100%" stop-color="#7F9876" />
+              </linearGradient>
+              <linearGradient id="featherPlume" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95" />
+                <stop offset="60%" stop-color="#FDF6EC" stop-opacity="0.82" />
+                <stop offset="100%" stop-color="#EFE0C8" stop-opacity="0.3" />
+              </linearGradient>
+              <linearGradient id="ribbonDrape" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#E7B3C0" />
+                <stop offset="30%" stop-color="#FCE8ED" />
+                <stop offset="50%" stop-color="#E3A9B8" />
+                <stop offset="75%" stop-color="#FCE8ED" />
+                <stop offset="100%" stop-color="#D898A8" />
+              </linearGradient>
+              <filter id="luxuryShadow" x="-15%" y="-15%" width="130%" height="135%">
+                <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#5E3E1C" flood-opacity="0.22" />
+              </filter>
+            </defs>
+
+            <!-- Traditional Gold Kanote Ornamental Corner Filigree & Royal Arch -->
+            <g opacity="0.88">
+              <!-- Top-Left Kanote Scrollwork -->
+              <path d="M26 140 C26 64, 68 26, 155 26" fill="none" stroke="url(#goldFoil)" stroke-width="2.2" />
+              <path d="M36 125 C36 72, 72 36, 136 36" fill="none" stroke="url(#goldFoil)" stroke-width="1.1" stroke-dasharray="4 3" />
+              <path d="M32 95 C48 82, 58 62, 46 46 C36 58, 34 78, 32 95 Z" fill="url(#goldFoil)" opacity="0.65" />
+              <path d="M98 32 C84 48, 64 56, 48 44 C60 34, 80 32, 98 32 Z" fill="url(#goldFoil)" opacity="0.65" />
+
+              <!-- Top-Right Kanote Scrollwork -->
+              <path d="M574 140 C574 64, 532 26, 445 26" fill="none" stroke="url(#goldFoil)" stroke-width="2.2" />
+              <path d="M564 125 C564 72, 528 36, 464 36" fill="none" stroke="url(#goldFoil)" stroke-width="1.1" stroke-dasharray="4 3" />
+              <path d="M568 95 C552 82, 542 62, 554 46 C564 58, 566 78, 568 95 Z" fill="url(#goldFoil)" opacity="0.65" />
+              <path d="M502 32 C516 48, 536 56, 552 44 C540 34, 520 32, 502 32 Z" fill="url(#goldFoil)" opacity="0.65" />
+
+              <!-- Center Royal Gold Mandala Halo behind Rings -->
+              <circle cx="300" cy="148" r="88" fill="none" stroke="url(#goldFoil)" stroke-width="1.4" opacity="0.7" />
+              <circle cx="300" cy="148" r="80" fill="none" stroke="url(#goldFoil)" stroke-width="0.9" stroke-dasharray="3 3" opacity="0.75" />
+              <path d="M165 56 Q300 18 435 56" fill="none" stroke="url(#goldFoil)" stroke-width="1.6" />
+            </g>
+
+            <!-- Soft White Ostrich / Marabou Feathers Framing the Arrangement -->
+            <g opacity="0.9">
+              <!-- Left Plume -->
+              <path d="M180 128 C125 90, 75 95, 42 124 C76 118, 112 122, 165 138 Z" fill="url(#featherPlume)" />
+              <path d="M172 114 C122 65, 76 62, 48 82 C82 82, 118 96, 162 124 Z" fill="url(#featherPlume)" />
+              <!-- Right Plume -->
+              <path d="M420 128 C475 90, 525 95, 558 124 C524 118, 488 122, 435 138 Z" fill="url(#featherPlume)" />
+              <path d="M428 114 C478 65, 524 62, 552 82 C518 82, 482 96, 438 124 Z" fill="url(#featherPlume)" />
+            </g>
+
+            <!-- Eucalyptus & Gold-Tipped Botanical Leaves -->
+            <g filter="url(#luxuryShadow)">
+              <!-- Left Botanical Cluster -->
+              <path d="M210 145 C165 135, 115 148, 82 178 C122 172, 165 162, 210 148 Z" fill="url(#eucalyptus)" />
+              <ellipse cx="122" cy="146" rx="16" ry="9" transform="rotate(-24 122 146)" fill="url(#eucalyptus)" />
+              <ellipse cx="148" cy="134" rx="15" ry="8.5" transform="rotate(-35 148 134)" fill="#9DB494" />
+              <ellipse cx="104" cy="166" rx="15" ry="8" transform="rotate(-12 104 166)" fill="#8CA483" />
+              <!-- Gold Accent Leaf -->
+              <path d="M196 132 C164 102, 134 94, 110 100 C136 112, 166 122, 194 136 Z" fill="url(#goldFoil)" opacity="0.82" />
+
+              <!-- Right Botanical Cluster -->
+              <path d="M390 145 C435 135, 485 148, 518 178 C478 172, 435 162, 390 148 Z" fill="url(#eucalyptus)" />
+              <ellipse cx="478" cy="146" rx="16" ry="9" transform="rotate(24 478 146)" fill="url(#eucalyptus)" />
+              <ellipse cx="452" cy="134" rx="15" ry="8.5" transform="rotate(35 452 134)" fill="#9DB494" />
+              <ellipse cx="496" cy="166" rx="15" ry="8" transform="rotate(12 496 166)" fill="#8CA483" />
+              <!-- Gold Accent Leaf -->
+              <path d="M404 132 C436 102, 466 94, 490 100 C464 112, 434 122, 406 136 Z" fill="url(#goldFoil)" opacity="0.82" />
+            </g>
+
+            <!-- Silk Satin Ribbon Swags Sweeping Beneath the Floral Crest -->
+            <g filter="url(#luxuryShadow)">
+              <path d="M88 188 Q195 224 300 198 Q405 224 512 188 Q410 238 300 212 Q190 238 88 188 Z" fill="url(#ribbonDrape)" />
+              <path d="M135 204 Q218 242 300 212 Q382 242 465 204" fill="none" stroke="url(#goldFoil)" stroke-width="1.3" />
+            </g>
+
+            <!-- Lush Pink & White Roses / Peonies Arrangement -->
+            <g filter="url(#luxuryShadow)">
+              <!-- Left Blush Rose -->
+              <g transform="translate(178, 152)">
+                <circle r="30" fill="url(#rosePink)" />
+                <path d="M-20 -6 C-18 -22, 16 -22, 20 -4 C22 12, -16 18, -20 -6 Z" fill="#F9CDD8" opacity="0.85" />
+                <path d="M-12 -4 C-10 -14, 10 -14, 12 -2 C12 8, -10 10, -12 -4 Z" fill="#E38A9F" />
+                <path d="M-6 -2 C-5 -8, 5 -8, 6 -1 C6 4, -5 5, -6 -2 Z" fill="#FFF2F5" />
+              </g>
+
+              <!-- Left Ivory Peony -->
+              <g transform="translate(216, 174)">
+                <circle r="24" fill="url(#roseIvory)" />
+                <path d="M-15 -4 C-13 -16, 13 -16, 15 -3 C16 10, -12 13, -15 -4 Z" fill="#FFFDF9" opacity="0.9" />
+                <path d="M-8 -2 C-7 -10, 7 -10, 8 -1 C8 6, -7 7, -8 -2 Z" fill="#E6CEA8" />
+              </g>
+
+              <!-- Outer Left Small Pink Rosebud -->
+              <g transform="translate(136, 168)">
+                <circle r="19" fill="url(#rosePink)" />
+                <path d="M-10 -3 C-8 -12, 8 -12, 10 -2 C10 7, -8 9, -10 -3 Z" fill="#FCE3E9" />
+              </g>
+
+              <!-- Right Blush Rose -->
+              <g transform="translate(422, 152)">
+                <circle r="30" fill="url(#rosePink)" />
+                <path d="M-20 -6 C-18 -22, 16 -22, 20 -4 C22 12, -16 18, -20 -6 Z" fill="#F9CDD8" opacity="0.85" />
+                <path d="M-12 -4 C-10 -14, 10 -14, 12 -2 C12 8, -10 10, -12 -4 Z" fill="#E38A9F" />
+                <path d="M-6 -2 C-5 -8, 5 -8, 6 -1 C6 4, -5 5, -6 -2 Z" fill="#FFF2F5" />
+              </g>
+
+              <!-- Right Ivory Peony -->
+              <g transform="translate(384, 174)">
+                <circle r="24" fill="url(#roseIvory)" />
+                <path d="M-15 -4 C-13 -16, 13 -16, 15 -3 C16 10, -12 13, -15 -4 Z" fill="#FFFDF9" opacity="0.9" />
+                <path d="M-8 -2 C-7 -10, 7 -10, 8 -1 C8 6, -7 7, -8 -2 Z" fill="#E6CEA8" />
+              </g>
+
+              <!-- Outer Right Small Pink Rosebud -->
+              <g transform="translate(464, 168)">
+                <circle r="19" fill="url(#rosePink)" />
+                <path d="M-10 -3 C-8 -12, 8 -12, 10 -2 C10 7, -8 9, -10 -3 Z" fill="#FCE3E9" />
+              </g>
+
+              <!-- Top Center Ivory & Blush Blossom Cluster Behind Rings -->
+              <g transform="translate(300, 96)">
+                <circle r="22" fill="url(#roseIvory)" />
+                <circle cx="-24" cy="10" r="17" fill="url(#rosePink)" />
+                <circle cx="24" cy="10" r="17" fill="url(#rosePink)" />
+              </g>
+            </g>
+
+            <!-- TWO GLEAMING INTERTWINED 3D GOLD WEDDING RINGS + SOLITAIRE DIAMOND -->
+            <g filter="url(#luxuryShadow)">
+              <!-- Left Wedding Band -->
+              <g transform="translate(278, 156) rotate(-14)">
+                <ellipse cx="0" cy="0" rx="34" ry="30" fill="none" stroke="url(#ringGold1)" stroke-width="8.5" />
+                <ellipse cx="0" cy="0" rx="34" ry="30" fill="none" stroke="#FFF9DF" stroke-width="1.4" opacity="0.85" />
+              </g>
+
+              <!-- Right Wedding Band (Interlocked) -->
+              <g transform="translate(322, 156) rotate(14)">
+                <ellipse cx="0" cy="0" rx="34" ry="30" fill="none" stroke="url(#ringGold2)" stroke-width="8.5" />
+                <ellipse cx="0" cy="0" rx="34" ry="30" fill="none" stroke="#FFF9DF" stroke-width="1.4" opacity="0.85" />
+              </g>
+
+              <!-- Interlocking Overlap Arc so the two rings genuinely link together -->
+              <g transform="translate(278, 156) rotate(-14)">
+                <path d="M24 -18 A34 30 0 0 1 32 10" fill="none" stroke="url(#ringGold1)" stroke-width="8.5" stroke-linecap="round" />
+                <path d="M24 -18 A34 30 0 0 1 32 10" fill="none" stroke="#FFF9DF" stroke-width="1.4" opacity="0.85" />
+              </g>
+
+              <!-- Radiant Solitaire Diamond on Top of the Right Ring -->
+              <g transform="translate(335, 123) rotate(18)">
+                <!-- Gold Prong Setting -->
+                <polygon points="-7,4 7,4 4,10 -4,10" fill="url(#goldFoil)" />
+                <!-- Faceted Diamond Crown -->
+                <polygon points="-11,-3 -6,-10 6,-10 11,-3 0,6" fill="#FFFFFF" stroke="#B9D9EB" stroke-width="0.9" />
+                <polygon points="-6,-10 6,-10 0,-3" fill="#E3F4FF" />
+                <polygon points="-11,-3 0,-3 0,6" fill="#CBE7F8" />
+                <polygon points="11,-3 0,-3 0,6" fill="#F2FAFF" />
+                <!-- Diamond Sparkle Starburst -->
+                <path d="M0 -18 L1.8 -11.8 L8 -10 L1.8 -8.2 L0 -2 L-1.8 -8.2 L-8 -10 L-1.8 -11.8 Z" fill="#FFFFFF" />
+              </g>
+
+              <!-- Secondary Gold Glimmer Sparkles around Rings -->
+              <path d="M248 124 L250 130 L256 132 L250 134 L248 140 L246 134 L240 132 L246 130 Z" fill="#FFFDF5" />
+              <path d="M300 184 L301.5 188.5 L306 190 L301.5 191.5 L300 196 L298.5 191.5 L294 190 L298.5 188.5 Z" fill="#FFF6D1" />
+            </g>
+          </svg>
+        </div>
+
+        <!-- ==================================================================
+             4. EXACT BURMESE INVITATION TEXT & 5. WEDDING DETAILS
+             ================================================================== -->
+        <div class="invitation-content">
+          <!-- Exact Burmese Title -->
+          <h1 class="burmese-header">မင်္ဂလာဖိတ်ကြားလွှာ</h1>
+
+          <!-- Gold Filigree Divider -->
+          <svg class="header-divider" viewBox="0 0 240 24" xmlns="http://www.w3.org/2000/svg">
+            <line x1="12" y1="12" x2="96" y2="12" stroke="#C59B27" stroke-width="1.2" />
+            <line x1="144" y1="12" x2="228" y2="12" stroke="#C59B27" stroke-width="1.2" />
+            <path d="M120 3 L129 12 L120 21 L111 12 Z" fill="none" stroke="#C59B27" stroke-width="1.4" />
+            <circle cx="120" cy="12" r="3" fill="#C59B27" />
+            <circle cx="102" cy="12" r="2" fill="#D4AF37" />
+            <circle cx="138" cy="12" r="2" fill="#D4AF37" />
+          </svg>
+
+          <!-- Groom's Parents & Lineage (100% Exact) -->
+          <p class="burmese-lineage">
+            စစ်ကိုင်းတိုင်းဒေသကြီး၊ ကလေးဝမြို့နယ်၊ အုန်းပင်စုကျေးရွာနေ အဖ ဦးမောင်အေး + အမိ ဒေါ်ညိုညိုတို့၏သား၊ မအေးချမ်းညို၏မောင်
+          </p>
+
+          <!-- Groom's Name (100% Exact) -->
+          <div class="couple-name">မောင်ချမ်းမင်းခန့်</div>
+
+          <!-- Conjunction "နှင့်" (100% Exact) -->
+          <div class="conjunction-wrap">
+            <span class="conjunction-line"></span>
+            <span class="conjunction-word">နှင့်</span>
+            <span class="conjunction-line"></span>
+          </div>
+
+          <!-- Bride's Parents & Lineage with exact parentheses (100% Exact) -->
+          <p class="burmese-lineage">
+            စစ်ကိုင်းတိုင်းဒေသကြီး၊ ကလေးမြို့နယ်၊ ချောင်းခွကျေးရွာနေ (အဖ ဦးဝင်းဇော်) + အမိ ဒေါ်ဒီဒီမူတို့၏သမီး၊ မောင်ဘုန်းထက်နိုင်၏အမ
+          </p>
+
+          <!-- Bride's Name (100% Exact) -->
+          <div class="couple-name">မယွန်းနဒီဇော်</div>
+
+          <!-- Final Invitation Wording (100% Exact ending with ♥️♥️♥️) -->
+          <p class="burmese-closing">
+            တို့၏ ထိမ်းမြားမင်္ဂလာပွဲသို့ တက်ရောက်ဂုဏ်ပြုပေးပါရန် ခင်မင်ရင်းနှီးစွာ ဖိတ်ကြားအပ်ပါသည် ♥️♥️♥️
+          </p>
+
+          <!-- 5. WEDDING DETAILS (Date, Time, Location with Custom Gold Symbols) -->
+          <div class="details-panel" aria-label="Wedding Event Schedule">
+            <!-- Date -->
+            <div class="detail-row">
+              <svg class="detail-icon" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="5" width="22" height="20" rx="4" fill="none" stroke="#B58619" stroke-width="1.8" />
+                <line x1="3" y1="11" x2="25" y2="11" stroke="#B58619" stroke-width="1.6" />
+                <line x1="9" y1="2.5" x2="9" y2="7.5" stroke="#B58619" stroke-width="2" stroke-linecap="round" />
+                <line x1="19" y1="2.5" x2="19" y2="7.5" stroke="#B58619" stroke-width="2" stroke-linecap="round" />
+                <circle cx="14" cy="17.5" r="2.2" fill="#C89B2B" />
+              </svg>
+              <span class="detail-text">05 December 2026 (Saturday)</span>
+            </div>
+
+            <div class="detail-divider"></div>
+
+            <!-- Time -->
+            <div class="detail-row">
+              <svg class="detail-icon" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="14" cy="14" r="10.5" fill="none" stroke="#B58619" stroke-width="1.8" />
+                <polyline points="14,8 14,14 18.5,16.5" fill="none" stroke="#B58619" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <span class="detail-text">7:00 AM – 11:00 AM</span>
+            </div>
+
+            <div class="detail-divider"></div>
+
+            <!-- Location -->
+            <div class="detail-row">
+              <svg class="detail-icon" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 25 C14 25 22.5 16.8 22.5 11 A8.5 8.5 0 1 0 5.5 11 C5.5 16.8 14 25 14 25 Z" fill="none" stroke="#B58619" stroke-width="1.8" />
+                <circle cx="14" cy="11" r="3" fill="#C89B2B" />
+              </svg>
+              <span class="detail-text">Bangkok, Thailand</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- BOTTOM INTEGRATED ARTWORK: Romantic Pink & White Floral Arrangement, Satin Ribbon Bow & Gold Kanote Border -->
+        <div class="card-art-layer">
+          <svg class="bottom-floral-ribbon-svg" viewBox="0 0 600 175" xmlns="http://www.w3.org/2000/svg">
+            <g opacity="0.88">
+              <!-- Bottom-Left & Bottom-Right Traditional Gold Kanote Scrolls -->
+              <path d="M26 30 C26 112, 68 152, 165 152" fill="none" stroke="url(#goldFoil)" stroke-width="2.2" />
+              <path d="M36 45 C36 105, 72 142, 145 142" fill="none" stroke="url(#goldFoil)" stroke-width="1.1" stroke-dasharray="4 3" />
+              <path d="M574 30 C574 112, 532 152, 435 152" fill="none" stroke="url(#goldFoil)" stroke-width="2.2" />
+              <path d="M564 45 C564 105, 528 142, 455 142" fill="none" stroke="url(#goldFoil)" stroke-width="1.1" stroke-dasharray="4 3" />
+            </g>
+
+            <!-- Soft Feather Plumes at Bottom -->
+            <path d="M220 96 C155 128, 102 126, 68 104 C105 106, 152 102, 212 86 Z" fill="url(#featherPlume)" />
+            <path d="M380 96 C445 128, 498 126, 532 104 C495 106, 448 102, 388 86 Z" fill="url(#featherPlume)" />
+
+            <!-- Eucalyptus & Gold Leaves -->
+            <g filter="url(#luxuryShadow)">
+              <path d="M240 84 C190 98, 140 94, 102 74 C142 74, 188 78, 240 82 Z" fill="url(#eucalyptus)" />
+              <path d="M360 84 C410 98, 460 94, 498 74 C458 74, 412 78, 360 82 Z" fill="url(#eucalyptus)" />
+              <ellipse cx="164" cy="96" rx="15" ry="8" transform="rotate(18 164 96)" fill="#9DB494" />
+              <ellipse cx="436" cy="96" rx="15" ry="8" transform="rotate(-18 436 96)" fill="#9DB494" />
+              <path d="M224 94 C188 122, 154 132, 128 128 C156 116, 188 106, 222 90 Z" fill="url(#goldFoil)" opacity="0.8" />
+              <path d="M376 94 C412 122, 446 132, 472 128 C444 116, 412 106, 378 90 Z" fill="url(#goldFoil)" opacity="0.8" />
+            </g>
+
+            <!-- Flowing Blush Silk Satin Ribbon Bow -->
+            <g filter="url(#luxuryShadow)">
+              <path d="M294 94 Q246 132 214 152 L232 148 L242 158 Q268 130 300 98 Z" fill="url(#ribbonDrape)" />
+              <path d="M306 94 Q354 132 386 152 L368 148 L358 158 Q332 130 300 98 Z" fill="url(#ribbonDrape)" />
+              <path d="M296 90 C258 68, 232 82, 238 98 C244 112, 274 106, 296 96 Z" fill="url(#ribbonDrape)" stroke="#FFF5F7" stroke-width="0.8" />
+              <path d="M304 90 C342 68, 368 82, 362 98 C356 112, 326 106, 304 96 Z" fill="url(#ribbonDrape)" stroke="#FFF5F7" stroke-width="0.8" />
+            </g>
+
+            <!-- Bottom Center Rose & Peony Cluster -->
+            <g filter="url(#luxuryShadow)">
+              <g transform="translate(262, 82)">
+                <circle r="22" fill="url(#rosePink)" />
+                <path d="M-13 -3 C-11 -14, 11 -14, 13 -2 C14 8, -11 10, -13 -3 Z" fill="#FAD0DA" />
+              </g>
+              <g transform="translate(338, 82)">
+                <circle r="22" fill="url(#rosePink)" />
+                <path d="M-13 -3 C-11 -14, 11 -14, 13 -2 C14 8, -11 10, -13 -3 Z" fill="#FAD0DA" />
+              </g>
+              <g transform="translate(300, 76)">
+                <circle r="26" fill="url(#roseIvory)" />
+                <path d="M-16 -4 C-14 -17, 14 -17, 16 -3 C17 10, -13 13, -16 -4 Z" fill="#FFFDF9" />
+                <path d="M-8 -2 C-7 -9, 7 -9, 8 -1 C8 6, -7 7, -8 -2 Z" fill="#E6CEA8" />
+              </g>
+            </g>
+          </svg>
+        </div>
+      </article>
+
+      <!-- Subtle Interactive Controls -->
+      <div class="card-actions">
+        <button type="button" id="shower-btn" class="action-pill">
+          <span>✦ Shower Petals &amp; Gold Dust</span>
+        </button>
+        <button type="button" id="replay-btn" class="action-pill">
+          <span>↺ Replay Envelope</span>
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    /* ==========================================================================
+       1. ENVELOPE OPENING & REPLAY INTERACTION
+       ========================================================================== */
+    (function () {
+      const envelope = document.getElementById('envelope');
+      const openPrompt = document.getElementById('open-prompt');
+      const openBtn = document.getElementById('open-btn');
+      const invitationContainer = document.getElementById('invitation-container');
+      const showerBtn = document.getElementById('shower-btn');
+      const replayBtn = document.getElementById('replay-btn');
+
+      let isOpened = false;
+
+      function openInvitation() {
+        if (isOpened) return;
+        isOpened = true;
+
+        // 1. Trigger 3D envelope flap opening & card upward slide
+        envelope.classList.add('opened');
+        openPrompt.classList.add('hidden');
+
+        // 2. Trigger celebratory burst of individual petals & sparkling gold dust
+        if (window.triggerCelebrationBurst) {
+          window.triggerCelebrationBurst();
+        }
+
+        // 3. Transition smoothly into the full portrait invitation card
+        setTimeout(() => {
+          envelope.classList.add('hidden-away');
+          invitationContainer.classList.add('visible');
+
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              invitationContainer.classList.add('revealed');
+            });
+          });
+        }, 920);
+      }
+
+      function replayEnvelope() {
+        isOpened = false;
+        invitationContainer.classList.remove('revealed');
+
+        setTimeout(() => {
+          invitationContainer.classList.remove('visible');
+          envelope.classList.remove('hidden-away');
+          envelope.classList.remove('opened');
+          openPrompt.classList.remove('hidden');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }, 420);
+      }
+
+      envelope.addEventListener('click', openInvitation);
+      envelope.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openInvitation();
+        }
+      });
+      openBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openInvitation();
+      });
+
+      showerBtn.addEventListener('click', () => {
+        if (window.triggerCelebrationBurst) {
+          window.triggerCelebrationBurst();
+        }
+      });
+
+      replayBtn.addEventListener('click', replayEnvelope);
+
+      // Gentle burst on tapping anywhere on the revealed invitation card
+      invitationContainer.addEventListener('click', (e) => {
+        if (e.target.closest('button')) return;
+        if (window.spawnTapSparkles) {
+          window.spawnTapSparkles(e.clientX, e.clientY);
+        }
+      });
+    })();
+
+    /* ==========================================================================
+       2. INDIVIDUAL FALLING FLOWER PETALS & SPARKLING GOLD DUST ENGINE (CANVAS)
+       - Hundreds of individual curved flower petals (NO whole flowers, NO emojis)
+       - Realistic Bezier petal silhouettes with veins & shading
+       - Abundant twinkling gold dust, glitter specks & golden bokeh light orbs
+       ========================================================================== */
+    (function () {
+      const canvas = document.getElementById('petal-gold-canvas');
+      const ctx = canvas.getContext('2d');
+
+      let width = 0;
+      let height = 0;
+      let dpr = 1;
+
+      function resizeCanvas() {
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = Math.floor(width * dpr);
+        canvas.height = Math.floor(height * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
+
+      // Responsive particle counts so mobile & desktop both feel lush and run at 60fps
+      const isMobile = width < 640;
+      const BASE_PETAL_COUNT = isMobile ? 115 : 185;
+      const BASE_GOLD_COUNT = isMobile ? 160 : 260;
+
+      // Realistic Rose & Tulip Individual Petal Palettes (Pink, Blush, Ivory, Pure White)
+      const PETAL_PALETTES = [
+        { base: '#FAD5DF', tip: '#F09CB1', vein: 'rgba(214, 116, 141, 0.25)' }, // Soft Blush Pink
+        { base: '#F7C2D0', tip: '#E3849B', vein: 'rgba(196, 94, 120, 0.26)' }, // Rose Petal Pink
+        { base: '#FCE6EC', tip: '#F3B6C5', vein: 'rgba(218, 134, 154, 0.22)' }, // Pale Sakura Blush
+        { base: '#FFFDF9', tip: '#F6E6CE', vein: 'rgba(212, 180, 134, 0.22)' }, // Creamy Ivory White
+        { base: '#FFFFFF', tip: '#F9ECEF', vein: 'rgba(225, 178, 190, 0.20)' }, // Pure Silk White
+        { base: '#F4B4C4', tip: '#D9768E', vein: 'rgba(184, 82, 108, 0.25)' }  // Deep Romantic Rose
+      ];
+
+      // Gold Dust & Glitter Palettes
+      const GOLD_COLORS = [
+        '#FFF6CC',
+        '#F7DC79',
+        '#E5B93B',
+        '#D4AF37',
+        '#FFFDF2'
+      ];
+
+      const petals = [];
+      const goldParticles = [];
+
+      function randomRange(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      /* Individual Curved Flower Petal Class */
+      class FlowerPetal {
+        constructor(spawnAtTop = false, isBurst = false) {
+          this.reset(spawnAtTop, isBurst);
+        }
+
+        reset(spawnAtTop = true, isBurst = false) {
+          this.palette = PETAL_PALETTES[Math.floor(Math.random() * PETAL_PALETTES.length)];
+          this.shapeType = Math.floor(Math.random() * 3); // 3 natural individual petal silhouettes
+          this.size = randomRange(isMobile ? 7.5 : 8.5, isMobile ? 15.5 : 18.5);
+          this.x = randomRange(-40, width + 40);
+          this.y = spawnAtTop ? randomRange(-height * 0.35, -20) : randomRange(-20, height);
+
+          if (isBurst) {
+            this.x = width * 0.5 + randomRange(-width * 0.45, width * 0.45);
+            this.y = randomRange(-120, height * 0.35);
+            this.vy = randomRange(1.6, 3.6);
+            this.vx = randomRange(-2.2, 2.2);
+          } else {
+            this.vy = randomRange(0.75, 2.15);
+            this.vx = randomRange(-0.45, 0.55);
+          }
+
+          this.swayAmplitude = randomRange(0.6, 1.8);
+          this.swayFrequency = randomRange(0.012, 0.032);
+          this.swayPhase = randomRange(0, Math.PI * 2);
+
+          // 3D tumbling & rotation angles
+          this.rotation = randomRange(0, Math.PI * 2);
+          this.rotationSpeed = randomRange(-0.035, 0.035);
+          this.flipPhase = randomRange(0, Math.PI * 2);
+          this.flipSpeed = randomRange(0.025, 0.065);
+          this.opacity = randomRange(0.72, 0.96);
+          this.isBurst = isBurst;
+        }
+
+        update(time) {
+          this.swayPhase += this.swayFrequency;
+          this.flipPhase += this.flipSpeed;
+          this.rotation += this.rotationSpeed;
+
+          const wind = Math.sin(time * 0.0007 + this.swayPhase * 0.5) * 0.45;
+          this.x += this.vx + Math.sin(this.swayPhase) * this.swayAmplitude + wind;
+          this.y += this.vy;
+
+          if (this.isBurst && this.vy > 1.4) {
+            this.vy *= 0.992;
+            this.vx *= 0.985;
+          }
+
+          if (this.y > height + 30 || this.x < -70 || this.x > width + 70) {
+            if (this.isBurst && petals.length > BASE_PETAL_COUNT) {
+              return false; // trim extra burst petals smoothly once offscreen
+            }
+            this.reset(true, false);
+          }
+          return true;
+        }
+
+        draw(ctx) {
+          ctx.save();
+          ctx.translate(this.x, this.y);
+          ctx.rotate(this.rotation);
+
+          // Simulate 3D petal flutter by scaling along local X/Y with flipPhase
+          const scaleX = 0.45 + 0.55 * Math.abs(Math.cos(this.flipPhase));
+          const scaleY = 0.65 + 0.35 * Math.sin(this.flipPhase * 0.8);
+          ctx.scale(scaleX, scaleY);
+          ctx.globalAlpha = this.opacity;
+
+          const s = this.size;
+          const grad = ctx.createLinearGradient(0, -s, 0, s);
+          grad.addColorStop(0, this.palette.tip);
+          grad.addColorStop(0.65, this.palette.base);
+          grad.addColorStop(1, '#FFFDF9');
+
+          ctx.fillStyle = grad;
+          ctx.beginPath();
+
+          if (this.shapeType === 0) {
+            // Classic Cupped Rose Petal Silhouette
+            ctx.moveTo(0, s);
+            ctx.bezierCurveTo(-s * 0.95, s * 0.55, -s * 1.05, -s * 0.55, -s * 0.25, -s * 0.92);
+            ctx.quadraticCurveTo(0, -s * 0.78, s * 0.25, -s * 0.92);
+            ctx.bezierCurveTo(s * 1.05, -s * 0.55, s * 0.95, s * 0.55, 0, s);
+          } else if (this.shapeType === 1) {
+            // Elongated Tulip / Peony Petal Silhouette
+            ctx.moveTo(0, s * 1.1);
+            ctx.bezierCurveTo(-s * 0.75, s * 0.4, -s * 0.68, -s * 0.65, 0, -s * 1.05);
+            ctx.bezierCurveTo(s * 0.68, -s * 0.65, s * 0.75, s * 0.4, 0, s * 1.1);
+          } else {
+            // Soft Asymmetrical Drifting Petal
+            ctx.moveTo(0, s * 0.95);
+            ctx.bezierCurveTo(-s * 1.1, s * 0.3, -s * 0.75, -s * 0.85, s * 0.15, -s * 0.95);
+            ctx.bezierCurveTo(s * 0.95, -s * 0.55, s * 0.85, s * 0.45, 0, s * 0.95);
+          }
+
+          ctx.closePath();
+          ctx.fill();
+
+          // Delicate Central Petal Vein
+          ctx.strokeStyle = this.palette.vein;
+          ctx.lineWidth = 0.7;
+          ctx.beginPath();
+          ctx.moveTo(0, s * 0.82);
+          ctx.quadraticCurveTo(s * 0.08, 0, 0, -s * 0.72);
+          ctx.stroke();
+
+          ctx.restore();
+        }
+      }
+
+      /* Sparkling Gold Dust, Twinkling Glitter & Bokeh Orb Class */
+      class GoldDustParticle {
+        constructor(customX = null, customY = null, isBurst = false) {
+          this.reset(false, customX, customY, isBurst);
+        }
+
+        reset(spawnAtTop = true, customX = null, customY = null, isBurst = false) {
+          this.color = GOLD_COLORS[Math.floor(Math.random() * GOLD_COLORS.length)];
+          this.type = Math.random() < 0.72 ? 'dust' : (Math.random() < 0.75 ? 'star' : 'bokeh');
+          this.x = customX !== null ? customX : randomRange(0, width);
+          this.y = customY !== null ? customY : (spawnAtTop ? randomRange(-40, -5) : randomRange(0, height));
+
+          if (isBurst) {
+            const angle = randomRange(0, Math.PI * 2);
+            const speed = randomRange(0.8, 3.8);
+            this.vx = Math.cos(angle) * speed;
+            this.vy = Math.sin(angle) * speed - 0.5;
+          } else {
+            this.vx = randomRange(-0.28, 0.28);
+            this.vy = randomRange(0.22, 0.95);
+          }
+
+          this.radius = this.type === 'bokeh'
+            ? randomRange(3.2, 7.5)
+            : (this.type === 'star' ? randomRange(1.8, 3.6) : randomRange(0.9, 2.3));
+
+          this.twinklePhase = randomRange(0, Math.PI * 2);
+          this.twinkleSpeed = randomRange(0.04, 0.11);
+          this.isBurst = isBurst;
+          this.life = 1.0;
+        }
+
+        update() {
+          this.twinklePhase += this.twinkleSpeed;
+          this.x += this.vx + Math.sin(this.twinklePhase * 0.4) * 0.2;
+          this.y += this.vy;
+
+          if (this.isBurst) {
+            this.vx *= 0.97;
+            this.vy = this.vy * 0.97 + 0.025;
+            this.life -= 0.008;
+            if (this.life <= 0) return false;
+          }
+
+          if (this.y > height + 15 || this.x < -20 || this.x > width + 20) {
+            if (this.isBurst) return false;
+            this.reset(true);
+          }
+          return true;
+        }
+
+        draw(ctx) {
+          const twinkle = 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(this.twinklePhase));
+          const alpha = twinkle * (this.isBurst ? this.life : 1);
+
+          ctx.save();
+          ctx.translate(this.x, this.y);
+          ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
+
+          if (this.type === 'bokeh') {
+            const glow = ctx.createRadialGradient(0, 0, 0, 0, 0, this.radius * 2.2);
+            glow.addColorStop(0, 'rgba(255, 248, 214, 0.9)');
+            glow.addColorStop(0.45, 'rgba(229, 185, 59, 0.42)');
+            glow.addColorStop(1, 'rgba(212, 175, 55, 0)');
+            ctx.fillStyle = glow;
+            ctx.beginPath();
+            ctx.arc(0, 0, this.radius * 2.2, 0, Math.PI * 2);
+            ctx.fill();
+          } else if (this.type === 'star') {
+            // 4-point sparkling diamond glitter
+            const r = this.radius * (0.8 + 0.45 * twinkle);
+            ctx.fillStyle = '#FFFDF5';
+            ctx.shadowColor = '#E5B93B';
+            ctx.shadowBlur = 8;
+            ctx.beginPath();
+            ctx.moveTo(0, -r * 1.9);
+            ctx.lineTo(r * 0.42, -r * 0.42);
+            ctx.lineTo(r * 1.9, 0);
+            ctx.lineTo(r * 0.42, r * 0.42);
+            ctx.lineTo(0, r * 1.9);
+            ctx.lineTo(-r * 0.42, r * 0.42);
+            ctx.lineTo(-r * 1.9, 0);
+            ctx.lineTo(-r * 0.42, -r * 0.42);
+            ctx.closePath();
+            ctx.fill();
+          } else {
+            // Glowing Gold Dust Speck
+            ctx.fillStyle = this.color;
+            ctx.shadowColor = '#E5B93B';
+            ctx.shadowBlur = 6;
+            ctx.beginPath();
+            ctx.arc(0, 0, this.radius, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          ctx.restore();
+        }
+      }
+
+      // Initialize abundant ambient petals and sparkling gold dust
+      for (let i = 0; i < BASE_PETAL_COUNT; i++) {
+        petals.push(new FlowerPetal(false, false));
+      }
+      for (let i = 0; i < BASE_GOLD_COUNT; i++) {
+        goldParticles.push(new GoldDustParticle());
+      }
+
+      // Celebratory Burst Function (called when opening envelope or clicking "Shower Petals")
+      window.triggerCelebrationBurst = function () {
+        const extraPetals = isMobile ? 55 : 95;
+        const extraGold = isMobile ? 75 : 130;
+        for (let i = 0; i < extraPetals; i++) {
+          petals.push(new FlowerPetal(true, true));
+        }
+        for (let i = 0; i < extraGold; i++) {
+          goldParticles.push(
+            new GoldDustParticle(
+              width * 0.5 + randomRange(-160, 160),
+              height * 0.38 + randomRange(-90, 90),
+              true
+            )
+          );
+        }
+      };
+
+      // Local Sparkle Burst on User Tap
+      window.spawnTapSparkles = function (x, y) {
+        for (let i = 0; i < 24; i++) {
+          goldParticles.push(new GoldDustParticle(x, y, true));
+        }
+        for (let i = 0; i < 6; i++) {
+          const p = new FlowerPetal(false, true);
+          p.x = x + randomRange(-25, 25);
+          p.y = y + randomRange(-25, 25);
+          p.vy = randomRange(-1.2, 1.8);
+          petals.push(p);
+        }
+      };
+
+      // Main 60fps Animation Loop
+      function animate(time) {
+        ctx.clearRect(0, 0, width, height);
+
+        for (let i = petals.length - 1; i >= 0; i--) {
+          if (!petals[i].update(time)) {
+            petals.splice(i, 1);
+          } else {
+            petals[i].draw(ctx);
+          }
+        }
+
+        for (let i = goldParticles.length - 1; i >= 0; i--) {
+          if (!goldParticles[i].update()) {
+            goldParticles.splice(i, 1);
+          } else {
+            goldParticles[i].draw(ctx);
+          }
+        }
+
+        requestAnimationFrame(animate);
+      }
+
+      window.addEventListener('load', () => {
+        requestAnimationFrame(animate);
+      });
+    })();
+  </script>
+</body>
+</html>
